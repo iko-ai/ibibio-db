@@ -1,0 +1,19 @@
+{
+  "name": "ibibio-db",
+  "version": "1.0.0",
+  "description": "Database Form UI Platform for Collection of Ibibio Data",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "tailwindcss": "^3.4.4"
+  },
+
+  "scripts": {
+    "build:css": "tailwindcss -i src/frontend/static/tailwind.css -o src/frontend/static/output.css --watch"
+  }
+}

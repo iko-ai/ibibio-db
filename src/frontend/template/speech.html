@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Audio Recorder</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+        }
+
+        .card {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            padding: 20px;
+            max-width: 400px;
+            width: 100%;
+            text-align: center;
+            position: relative;
+        }
+
+        .counter {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #000000;
+            border-radius: 10px;
+            padding: 10px;
+            color: white;
+            margin-bottom: 20px;
+            font-size: 18px;
+        }
+
+        .ibibio-counter {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #dfdfdf;
+            border-radius: 10px;
+            padding: 2px;
+            color: black;
+            margin-bottom: 20px;
+            font-size: 9px;
+        }
+        .ibibio-counter p {
+            font-size: medium;
+        }
+        
+        .counter div {
+            display: flex;
+            align-items: center;
+        }
+
+        .counter img {
+            margin-right: 10px;
+            width: 24px;
+            height: 24px;
+        }
+
+
+        .icon-card {
+            background: #e3dede;
+            border-radius: 10px;
+            padding: 15px;
+            margin-top: 20px;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .button {
+            background-color: transparent;
+            border: none;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        .button:disabled {
+            cursor: not-allowed;
+        }
+
+        .button:disabled img {
+            opacity: 0.5;
+        }
+
+        .button img {
+            width: 30px;
+            height: 30px;
+        }
+
+        .button:hover img {
+            transform: scale(1.2);
+        }
+
+        #recordButton img {
+            width: 32px;
+            height: 32px;
+        }
+
+        .notification {
+            display: none;
+            margin-top: 10px;
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border-radius: 5px;
+        }
+
+        .notification.show {
+            display: block;
+        }
+
+        .navbar {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+        }
+        .menu-button {
+            background-color: transparent;
+            border: none;
+            cursor: pointer;
+            width: 30px;
+            height: 30px;
+        }
+        .menu-button img {
+            width: 100%;
+            height: 100%;
+        }
+        .dropdown {
+            display: none;
+            position: absolute;
+            top: 40px;
+            left: 10px;
+            background-color: #000;
+            box-shadow: 0 4px 8px rgba(255, 255, 255, 0.2);
+            border-radius: 5px;
+            z-index: 1;
+        }
+        .dropdown a {
+            display: block;
+            padding: 10px 20px;
+            text-decoration: none;
+            color: #fff;
+            border-bottom: 1px solid #ddd;
+        }
+        .dropdown a:last-child {
+            border-bottom: none;
+        }
+        .dropdown a:hover {
+            background-color: #333;
+        }
+        .hidden {
+            display: none;
+        }
+
+        .text-container {
+            margin-bottom: 45px;
+            background: #d1d1d1;
+            /* padding: 0.5px 10px; */
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            margin-top: 0px;
+            padding-top: 1px;
+            padding-bottom: 1px;
+        }
+
+        .text-counter {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #000000;
+            border-radius: 10px;
+            padding-left: 13px;
+            color: white;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+
+        .text-counter h2 {
+            font-size: x-large;
+            font-weight: 200;
+        }
+
+
+        /* Responsive adjustments */
+        @media (max-width: 600px) {
+
+            body {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                height: 100vh;
+                margin: 0;
+                font-family: Arial, sans-serif;
+                background-color: #f0f0f0;
+                padding-left: 14px;
+                padding-right: 18px;
+            }
+
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="navbar">
+        <button class="menu-button" onclick="toggleDropdown()">
+            <img src="https://img.icons8.com/material-outlined/24/menu--v1.png" alt="menu-icon"/>
+        </button>
+        <div class="dropdown" id="dropdownMenu">
+            <a href="/">Text</a>
+            <a href="/speak">Speech</a>
+            <a href="/edit">Edit</a>
+            <a href="/about">About</a>
+        </div>
+    </div>
+    
+    <div class="card">
+
+        <div class="text-counter">
+            <span><h2>Record Voice In Ibibio</h2></span>
+        </div>
+
+        <div class="counter">
+            <div>
+                <span>Done: <span id="recordingsDone">10</span></span>
+            </div>
+            <div>
+                <span>Left: <span id="recordingsLeft">5,000,000</span></span>
+            </div>
+        </div>
+
+
+        <div class="ibibio-counter">
+            <p>
+               akood mme ikpọawo ifiọk ado ke ndedịbe anyʌñ adiọọñọ ato ammọ ukem ini a-ntantaafiọñ akewuọọhọ ada. 
+            </p>
+        </div>
+        <div class="recorder">
+            <audio id="audioPlayback" controls></audio>
+            <div class="icon-card">
+                <button class="button" id="stopButton" disabled>
+                    <img width="30" height="30" src="https://img.icons8.com/plumpy/30/stop-squared.png" alt="stop-squared"/>
+                </button>
+                <button class="button" id="recordButton">
+                    <img width="32" height="32" src="https://img.icons8.com/puffy-filled/32/microphone--v1.png" alt="microphone--v1"/>
+                </button>
+                <button class="button" id="saveButton" disabled>
+                    <img width="30" height="30" src="https://img.icons8.com/ios-glyphs/30/downloading-updates.png" alt="downloading-updates"/>
+                </button>
+                <button class="button" id="deleteButton" disabled>
+                    <img width="30" height="30" src="https://img.icons8.com/ios-glyphs/30/filled-trash.png" alt="filled-trash"/>
+                </button>
+            </div>
+        </div>
+        <div class="notification" id="notification">
+            Recording saved successfully!
+        </div>
+    </div>
+
+    <script>
+
+        function toggleDropdown() {
+                    const dropdownMenu = document.getElementById('dropdownMenu');
+                    dropdownMenu.style.display = dropdownMenu.style.display === 'block' ? 'none' : 'block';
+                }
+
+
+
+
+
+        let mediaRecorder;
+        let audioChunks = [];
+        let recordingsLeft = '5,000,000';
+        let recordingsDone = '500';
+
+        const recordButton = document.getElementById('recordButton');
+        const stopButton = document.getElementById('stopButton');
+        const saveButton = document.getElementById('saveButton');
+        const deleteButton = document.getElementById('deleteButton');
+        const audioPlayback = document.getElementById('audioPlayback');
+        const recordingsLeftSpan = document.getElementById('recordingsLeft');
+        const recordingsDoneSpan = document.getElementById('recordingsDone');
+        const notification = document.getElementById('notification');
+
+        function updateCounters() {
+            recordingsLeftSpan.textContent = recordingsLeft;
+            recordingsDoneSpan.textContent = recordingsDone;
+        }
+
+        function showNotification() {
+            notification.classList.add('show');
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 3000);
+        }
+
+        recordButton.addEventListener('click', async () => {
+            if (recordingsLeft > 0) {
+                if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+                    try {
+                        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                        mediaRecorder = new MediaRecorder(stream);
+                        mediaRecorder.start();
+
+                        mediaRecorder.ondataavailable = event => {
+                            audioChunks.push(event.data);
+                        };
+
+                        mediaRecorder.onstop = () => {
+                            const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
+                            const audioUrl = URL.createObjectURL(audioBlob);
+                            audioPlayback.src = audioUrl;
+
+                            saveButton.disabled = false;
+                            deleteButton.disabled = false;
+                        };
+
+                        recordButton.disabled = true;
+                        stopButton.disabled = false;
+                    } catch (err) {
+                        console.error('Error accessing media devices.', err);
+                    }
+                }
+            } else {
+                alert('No recordings left.');
+            }
+        });
+
+        stopButton.addEventListener('click', () => {
+            mediaRecorder.stop();
+            recordButton.disabled = false;
+            stopButton.disabled = true;
+        });
+
+        saveButton.addEventListener('click', () => {
+            const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(audioBlob);
+            a.download = 'recording.wav';
+            a.click();
+
+            recordingsLeft--;
+            recordingsDone++;
+            updateCounters();
+            showNotification();
+
+            saveButton.disabled = true;
+            deleteButton.disabled = true;
+        });
+
+        deleteButton.addEventListener('click', () => {
+            audioPlayback.src = '';
+            audioChunks = [];
+
+            saveButton.disabled = true;
+            deleteButton.disabled = true;
+        });
+
+        updateCounters();
+    </script>
+</body>
+</html>

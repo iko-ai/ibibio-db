@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form Example</title>
+</head>
+<style>
+    body {
+        font-family: 'Inter', sans-serif;
+        background-color: #ececec;
+        margin: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        padding: 1rem;
+    }
+
+    .card {
+        background-color: white;
+        border-radius: 0.5rem;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        padding: 1.5rem;
+        width: 100%;
+        max-width: 28rem;
+        margin-top: 2rem;
+    }
+
+    .grid {
+        display: grid;
+        gap: 1.5rem;
+    }
+
+    .space-y-2 > * + * {
+        margin-top: 0.5rem;
+    }
+
+    .label {
+        font-size: 1rem; /* Increase font size for better legibility */
+        font-weight: 500;
+    }
+
+    .textarea {
+        width: 100%;
+        padding: 0.75rem;
+        border-radius: 0.375rem;
+        border: 1px solid #d1d5db;
+        resize: none;
+        font-size: 1rem;
+        color: #374151;
+        padding-left: 12px;
+        padding-right: 2px;
+    }
+
+    .textarea:focus {
+        outline: none;
+        border-color: #3b82f6;
+        box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.5);
+    }
+
+    .flex {
+        display: flex;
+        justify-content: space-between; /* Adjust alignment for buttons */
+        gap: 0.5rem;
+    }
+
+    .button-icon {
+        width: 2.5rem;
+        height: 2.5rem;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        background-color: transparent;
+        border: none;
+        cursor: pointer;
+        transition: background-color 0.2s ease;
+    }
+
+
+
+    .button-icon:hover {
+        background-color: #f1f5f9;
+    }
+
+
+
+    .icon {
+        width: 1.25rem;
+        height: 1.25rem;
+        stroke: currentColor;
+    }
+
+
+    /* Responsive adjustments */
+    @media (max-width: 600px) {
+        .card {
+            margin-top: -3rem;
+            padding: 2rem;
+            padding-left: 17px;
+        }
+
+        .label {
+            font-size: 0.875rem; /* Adjust font size for smaller screens */
+        }
+
+        .textarea {
+            font-size: 0.875rem;
+            padding: 0.5rem;
+        }
+    }
+
+    .navbar {
+        position: absolute;
+        top: 10px;
+        left: 10px;
+    }
+
+    .menu-button {
+        background-color: transparent;
+        border: none;
+        cursor: pointer;
+        width: 30px;
+        height: 30px;
+    }
+
+    .menu-button img {
+        width: 100%;
+        height: 100%;
+    }
+
+    .dropdown {
+        display: none;
+        position: absolute;
+        top: 40px;
+        left: 10px;
+        background-color: #000;
+        box-shadow: 0 4px 8px rgba(255, 255, 255, 0.2);
+        border-radius: 5px;
+        z-index: 1;
+    }
+
+    .dropdown a {
+        display: block;
+        padding: 10px 20px;
+        text-decoration: none;
+        color: #fff;
+        border-bottom: 1px solid #ddd;
+    }
+
+    .dropdown a:last-child {
+        border-bottom: none;
+    }
+
+    .dropdown a:hover {
+        background-color: #333;
+    }
+
+    .hidden {
+        display: none;
+    }
+
+    /* Styling for save count container */
+    #saveCountContainer {
+        text-align: center;
+        margin-bottom: 3rem;
+    }
+
+    #saveCountContainer p {
+        background-color: #000000;
+        color: white;
+        padding: 0.5rem 1rem;
+        border-radius: 0.375rem;
+        font-size: 1rem;
+        margin: 0.5rem 0;
+        display: inline-block;
+        font-style: oblique;
+    }
+
+    #saveCountContainer p span {
+        font-weight: lighter;
+    }
+</style>
+<body>
+
+    <div class="navbar">
+        <button class="menu-button" onclick="toggleDropdown()">
+            <img src="https://img.icons8.com/material-outlined/24/menu--v1.png" alt="menu-icon"/>
+        </button>
+        <div class="dropdown" id="dropdownMenu">
+            <a href="/">Text</a>
+            <a href="/speak">Speech</a>
+            <a href="/edit">Edit</a>
+            <a href="/about">About</a>
+        </div>
+    </div>
+
+    <div class="card" id="mainContent">
+        <div id="saveCountContainer">
+            <p>Saves: <span id="saveCount">{{ save_count }}</span></p>
+            <p>Total: <span id="totalRows">22,138</span></p>
+        </div>
+        {% if data %}
+        <form method="post" action="/update">
+            <input type="hidden" name="id" value="{{ data.ID }}">
+            <input type="hidden" name="index" value="{{ index }}">
+            <div class="grid gap-6">
+                <div class="space-y-2">
+                    <label for="english" class="label">English Sentence</label>
+                    <textarea id="english" name="english" rows="2" class="textarea">{{ data.ENGLISH }}</textarea>
+                </div>
+                <div class="space-y-2">
+                    <label for="ibibio" class="label">Ibibio Sentence</label>
+                    <textarea id="ibibio" name="ibibio" rows="2" class="textarea">{{ data.IBIBIO }}</textarea>
+                </div>
+                <div class="flex justify-end gap-2">
+                    {% if index > 0 %}
+                    <a href="/?index={{ index - 1 }}">
+                        <button type="button" class="button-icon" aria-label="Previous">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon">
+                                <path d="m12 19-7-7 7-7"></path>
+                                <path d="M19 12H5"></path>
+                            </svg>
+                        </button>
+                    </a>
+                    {% endif %}
+                    <button type="submit" class="button-icon" aria-label="Save">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon">
+                            <path d="M15.2 3a2 2 0 0 1 1.4.6l3.8 3.8a2 2 0 0 1 .6 1.4V19a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z"></path>
+                            <path d="M17 21v-7a1 1 0 0 0-1-1H8a1 1 0 0 0-1 1v7"></path>
+                            <path d="M7 3v4a1 1 0 0 0 1 1h7"></path>
+                        </svg>
+                    </button>
+                    <a href="/?index={{ index + 1 }}">
+                        <button type="button" class="button-icon" aria-label="Next">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon">
+                                <path d="M5 12h14"></path>
+                                <path d="m12 5 7 7-7 7"></path>
+                            </svg>
+                        </button>
+                    </a>
+                </div>
+            </div>
+        </form>
+        {% else %}
+        <h1>No more data to display.</h1>
+        {% endif %}
+    </div>
+    <script>
+        function toggleDropdown() {
+            const dropdownMenu = document.getElementById('dropdownMenu');
+            const mainContent = document.getElementById('mainContent');
+            if (dropdownMenu.style.display === 'block') {
+                dropdownMenu.style.display = 'none';
+                mainContent.style.display = 'block';
+            } else {
+                dropdownMenu.style.display = 'block';
+                mainContent.style.display = 'none';
+            }
+        }
+    </script>
+</body>
+</html>

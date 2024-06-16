@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form Example</title>
+</head>
+<style>
+
+    .navbar {
+        position: absolute;
+        top: 10px;
+        left: 10px;
+    }
+
+    .menu-button {
+        background-color: transparent;
+        border: none;
+        cursor: pointer;
+        width: 30px;
+        height: 30px;
+    }
+
+    .menu-button img {
+        width: 100%;
+        height: 100%;
+    }
+
+    .dropdown {
+        display: none;
+        position: absolute;
+        top: 40px;
+        left: 10px;
+        background-color: #000;
+        box-shadow: 0 4px 8px rgba(255, 255, 255, 0.2);
+        border-radius: 5px;
+        z-index: 1;
+    }
+
+    .dropdown a {
+        display: block;
+        padding: 10px 20px;
+        text-decoration: none;
+        color: #fff;
+        border-bottom: 1px solid #ddd;
+    }
+
+    .dropdown a:last-child {
+        border-bottom: none;
+    }
+
+    .dropdown a:hover {
+        background-color: #333;
+    }
+
+    .hidden {
+        display: none;
+    }
+
+    .about {
+        /* margin-left: 98px; */
+        padding: 29px;
+    }
+
+
+
+
+
+    @media (max-width: 600px) {
+
+        .about {
+            /* margin-left: 98px; */
+            padding: 29px;
+            font-size: smaller;
+            }
+    }
+
+</style>
+<body>
+
+
+    <div class="navbar">
+        <button class="menu-button" onclick="toggleDropdown()">
+            <img src="https://img.icons8.com/material-outlined/24/menu--v1.png" alt="menu-icon"/>
+        </button>
+        <div class="dropdown" id="dropdownMenu">
+            <a href="/">Text</a>
+            <a href="/speak">Speech</a>
+            <a href="/edit">Edit</a>
+            <a href="/about">About</a>
+        </div>
+    </div>
+
+
+    <div class="about"  id="mainContent">
+        <h1>IBIBIO DATA COLLECTION PLATFORM</h1>
+
+        <h3>ibom-log revolutionizes language data collection by providing a seamless platform for experts to contribute their expertise in creating a concise database for ibom languages. With ibom-log, we aim to gather accurate language data effortlessly, enabling smoother cross-cultural communication while empowering linguistic research. Our intuitive interface and robust features make it easy for users to collaborate and contribute, fostering a global community of language enthusiasts and professionals</h3>
+    </div>
+
+</body>
+<script>
+    function toggleDropdown() {
+        const dropdownMenu = document.getElementById('dropdownMenu');
+        const mainContent = document.getElementById('mainContent');
+        if (dropdownMenu.style.display === 'block') {
+            dropdownMenu.style.display = 'none';
+            mainContent.style.display = 'block';
+        } else {
+            dropdownMenu.style.display = 'block';
+            mainContent.style.display = 'none';
+        }
+    }
+</script>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+

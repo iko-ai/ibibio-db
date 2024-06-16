@@ -1,0 +1,7 @@
+.text-container {
+    margin-bottom: 26px;
+    background: #d1d1d1;
+    padding: 0px;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}

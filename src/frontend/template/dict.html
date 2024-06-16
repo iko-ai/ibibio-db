@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dictionary Entry Form</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #fff;
+            color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            height: 100vh;
+            margin: 0;
+            padding-top: 28px;
+            padding-bottom: 54px;
+        }
+        .card {
+            background-color: #fffefe;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(255, 255, 255, 0.1);
+            max-width: 500px;
+            width: 100%;
+            padding: 20px;
+            box-sizing: border-box;
+            border: 1px solid #000;
+        }
+        .card h2 {
+            margin-top: 0;
+            color: black;
+        }
+        .form-group {
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+        }
+        .form-group label {
+            flex: 1;
+            display: block;
+            margin-bottom: 5px;
+            color: #000;
+            font-weight: normal;
+            font-size: 0.999em;
+        }
+        .form-group input, .form-group textarea {
+            flex: 2;
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #000;
+            border-radius: 4px;
+            background-color: #fff;
+            color: #000;
+        }
+        .form-group textarea {
+            resize: vertical;
+        }
+        .add-button, .delete-button, .save-button, .next-button {
+            display: inline-block;
+            padding: 10px 15px;
+            margin-top: 10px;
+            border: none;
+            border-radius: 4px;
+            color: white;
+            cursor: pointer;
+        }
+        .add-button, .delete-button {
+            background-color: #555;
+            border: none;
+            margin-left: 20px;
+        }
+        .save-button {
+            background-color: #000;
+        }
+        .next-button {
+            background-color: #007bff;
+        }
+        .add-button, .delete-button {
+            display: inline-block;
+            padding: 4px 5px;
+            margin-top: 1px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .add-button img, .delete-button img {
+            width: 19px;
+            height: 19px;
+        }
+        .navbar {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+        }
+        .menu-button {
+            background-color: transparent;
+            border: none;
+            cursor: pointer;
+            width: 30px;
+            height: 30px;
+        }
+        .menu-button img {
+            width: 100%;
+            height: 100%;
+        }
+        .dropdown {
+            display: none;
+            position: absolute;
+            top: 40px;
+            left: 10px;
+            background-color: #000;
+            box-shadow: 0 4px 8px rgba(255, 255, 255, 0.2);
+            border-radius: 5px;
+            z-index: 1;
+        }
+        .dropdown a {
+            display: block;
+            padding: 10px 20px;
+            text-decoration: none;
+            color: #fff;
+            border-bottom: 1px solid #ddd;
+        }
+        .dropdown a:last-child {
+            border-bottom: none;
+        }
+        .dropdown a:hover {
+            background-color: #333;
+        }
+        .hidden {
+            display: none;
+        }
+
+        .button-container {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .icon-button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0;
+        }
+
+        .icon-button img {
+            width: 24px;
+            height: 24px;
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <button class="menu-button" onclick="toggleDropdown()">
+            <img src="https://img.icons8.com/material-outlined/24/menu--v1.png" alt="menu-icon"/>
+        </button>
+        <div class="dropdown" id="dropdownMenu">
+            <a href="/">Speech</a>
+            <a href="/form">Text</a>
+            <a href="/edit">Edit</a>
+            <a href="/about">About</a>
+        </div>
+    </div>
+    <div class="card" id="cardContent">
+        <h2>Edit Dictionary Entry</h2>
+        <form id="dictionary-form">
+            <div class="form-group">
+                <label for="term">Term:</label>
+                <input type="text" id="term" name="term" value="abakañ" required>
+            </div>
+            <div class="form-group">
+                <label for="part_of_speech">Part of Speech:</label>
+                <input type="text" id="part_of_speech" name="part_of_speech" value="noun" required>
+            </div>
+            <div id="definitions-container">
+                <div class="form-group definition-group" id="definition-group-1">
+                    <label for="definition-1">Definition:</label>
+                    <input type="text" id="definition-1" name="definitions" value="a kind of tree which often grows very large in the bush" required>
+                    <button type="button" class="add-button" onclick="addDefinition()">
+                        <img src="https://img.icons8.com/metro/26/000000/plus-math.png" alt="add-icon"/>
+                    </button>
+                </div>
+                <div class="form-group definition-group" id="definition-group-2">
+                    <label for="definition-2">Definition:</label>
+                    <input type="text" id="definition-2" name="definitions" value="its succulent leaves are used for goat fodder" required>
+                    <button type="button" class="delete-button" onclick="deleteDefinition(2)">
+                        <img src="https://img.icons8.com/material-outlined/24/delete.png" alt="delete-icon"/>
+                    </button>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="english_sentence">English Sentence:</label>
+                <textarea id="english_sentence" name="english_sentence" rows="3" required>Enter an English sentence</textarea>
+            </div>
+            <div class="form-group">
+                <label for="ibibio_sentence">Ibibio Sentence:</label>
+                <textarea id="ibibio_sentence" name="ibibio_sentence" rows="3" required>Enter an Ibibio sentence</textarea>
+            </div>
+            <div class="form-group">
+                <label for="related_terms">Related Terms:</label>
+                <input type="text" id="related_terms" name="related_terms" value="Related term 1, Related term 2">
+            </div>
+        </form>
+        <div class="button-container">
+            <button type="button" class="icon-button" onclick="submitForm()">
+                <img src="https://img.icons8.com/material-outlined/24/save.png" alt="save-icon"/>
+            </button>
+            <form action="/next" method="post" style="display:inline;">
+                <button type="submit" class="icon-button">
+                    <img src="https://img.icons8.com/material-outlined/24/next.png" alt="next-icon"/>
+                </button>
+            </form>
+        </div>
+    </div>
+    
+    <script>
+        let definitionCount = 2;
+    
+        function addDefinition() {
+            definitionCount++;
+            const definitionsContainer = document.getElementById('definitions-container');
+            const newDefinitionGroup = document.createElement('div');
+            newDefinitionGroup.classList.add('form-group', 'definition-group');
+            newDefinitionGroup.id = `definition-group-${definitionCount}`;
+            newDefinitionGroup.innerHTML = `
+                <label for="definition-${definitionCount}">Definition:</label>
+                <input type="text" id="definition-${definitionCount}" name="definitions" required>
+                <button type="button" class="add-button" onclick="addDefinition()">
+                    <img src="https://img.icons8.com/metro/26/000000/plus-math.png" alt="add-icon"/>
+                </button>
+                <button type="button" class="delete-button" onclick="deleteDefinition(${definitionCount})">
+                    <img src="https://img.icons8.com/material-outlined/24/delete.png" alt="delete-icon"/>
+                </button>
+            `;
+            definitionsContainer.appendChild(newDefinitionGroup);
+        }
+    
+        function deleteDefinition(id) {
+            const definitionGroup = document.getElementById(`definition-group-${id}`);
+            definitionGroup.remove();
+        }
+    
+        function toggleDropdown() {
+            const dropdownMenu = document.getElementById('dropdownMenu');
+            const cardContent = document.getElementById('cardContent');
+            dropdownMenu.style.display = dropdownMenu.style.display === 'block' ? 'none' : 'block';
+            cardContent.classList.toggle('hidden');
+        }
+
+        function submitForm() {
+            document.getElementById('dictionary-form').submit();
+        }
+    </script>
+</body>
+</html>
