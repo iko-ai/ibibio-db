@@ -8,11 +8,7 @@ from fastapi.responses import HTMLResponse, RedirectResponse, JSONResponse
 from starlette.requests import Request
 from pydantic import BaseModel
 
-from fastapi import FastAPI, Request, Form
-from fastapi.responses import HTMLResponse, RedirectResponse
-from fastapi.templating import Jinja2Templates
 from supabase import create_client, Client
-import pandas as pd
 
 app = FastAPI()
 load_dotenv()
@@ -66,43 +62,5 @@ async def read_root(request: Request):
 @app.get("/about")
 async def read_root(request: Request):
     return templates.TemplateResponse("about.html", {"request": request})
-
-
-
-
-# @app.get("/dict")
-# async def dict(request: Request):
-#     return templates.TemplateResponse("dict.html", {"request": request,})
-
-# @app.get("/supa")
-# async def read_data(request: Request, index: int = 0):
-#     response = supabase.table('iko').select('ID', 'ENGLISH', 'IBIBIO').range(index, index + 1).execute()
-#     data = response.data
-
-#     return templates.TemplateResponse("let.html", {"request": request, "data": data[0] if data else None, "index": index})
-
-
-
-# @app.post("/update")
-# async def update_data(id: int = Form(...), english: str = Form(...), ibibio: str = Form(...), index: int = Form(...)):
-#    supabase.table('iko').update({"ENGLISH": english, "IBIBIO": ibibio}).eq("ID", id).execute()
-#   return RedirectResponse(url=f"/?index={index}", status_code=303)
-
-#-------------------------------------------------------------------------------------------------------#
-# @app.get("/")
-# async def read_data(request: Request, index: int = 0):
-#     response = supabase.table('iko').select('ID', 'ENGLISH', 'IBIBIO').range(index, index + 1).execute()
-#     data = response.data
-
-#     return templates.TemplateResponse("index.html", {"request": request, "data": data[0] if data else None, "index": index})
-
-
-
-# @app.get("/okon")
-# async def read_data(request: Request, index: int = 0):
-#     response = supabase.table('iko').select('ID', 'ENGLISH', 'IBIBIO').range(index, index + 1).execute()
-#     data = response.data
-
-#     return templates.TemplateResponse("supa.html", {"request": request, "data": data[0] if data else None, "index": index})
 
 
